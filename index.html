@@ -39,13 +39,34 @@
         </div>
 
         <!-- The scroll container drives the 3D camera -->
-        <!-- Increased to 800vh to fit 6 projects + intro + footer -->
-        <div class="scroll-container" style="height: 800vh;">
+        <!-- Increased height to 900vh to accommodate the new Experience screen -->
+        <div class="scroll-container" style="height: 900vh;">
             
+            <!-- HERO SECTION (Updated text width & consistent buttons) -->
             <section class="screen" id="screen-1">
-                <div class="content-block">
-                    <h1 class="hero-title">Strategy with a human touch.</h1>
-                    <p class="hero-subtitle">Scroll to explore the architecture of my work.</p>
+                <div class="hero-wrapper">
+                    
+                    <!-- Left Side: Intro Text -->
+                    <div class="content-block left-align">
+                        <h1 class="hero-title">Strategy with a human touch.</h1>
+                        <p class="hero-subtitle">Scroll to explore the architecture of my work.</p>
+                    </div>
+                    
+                    <!-- Right Side: Profile Picture & Contact -->
+                    <div class="hero-profile right-align">
+                        
+                        <div class="profile-image-container">
+                            <img src="assets/profile.png" alt="Shweta Mandwale" class="profile-img">
+                            <div class="profile-ring"></div>
+                        </div>
+                        
+                        <!-- NEW: Unified buttons matching the Resume button -->
+                        <div class="contact-pills" style="display: flex; gap: 1.5rem; margin-top: 2.5rem; z-index: 10;">
+                            <a href="mailto:shweta_m@nid.edu" class="btn-primary magnetic-btn">Email</a>
+                            <a href="tel:+919766502689" class="btn-primary magnetic-btn">Phone</a>
+                        </div>
+
+                    </div>
                 </div>
             </section>
 
@@ -55,7 +76,7 @@
                     <p class="tag">01 / BEHAVIORAL DESIGN</p>
                     <h2>Play at What Cost?</h2>
                     <p>Redesigning safety compliance through behavioral nudges.</p>
-                    <a href="https://www.behance.net/gallery/238381413/PLAY-AT-WHAT-COST" target="_blank" class="explore-btn">Read Case Study →</a>
+                    <a href="https://www.behance.net/gallery/238381413/PLAY-AT-WHAT-COST" target="_blank" class="explore-btn magnetic-btn">Read Case Study →</a>
                 </div>
             </section>
 
@@ -65,7 +86,7 @@
                     <p class="tag">02 / CIVIC ENGAGEMENT</p>
                     <h2>ProxiMate</h2>
                     <p>Community support reimagined through gamification.</p>
-                    <a href="https://www.behance.net/gallery/238397497/ProxiMate" target="_blank" class="explore-btn">Read Case Study →</a>
+                    <a href="https://www.behance.net/gallery/238397497/ProxiMate" target="_blank" class="explore-btn magnetic-btn">Read Case Study →</a>
                 </div>
             </section>
 
@@ -75,45 +96,73 @@
                     <p class="tag">03 / ENTERPRISE SAAS</p>
                     <h2>Finance Tracker</h2>
                     <p>Digitizing corporate travel booking and reimbursement.</p>
-                    <a href="https://www.behance.net/gallery/238378255/Finance-Tracker-Travel-Expense-Management-System" target="_blank" class="explore-btn">Read Case Study →</a>
+                    <a href="https://www.behance.net/gallery/238378255/Finance-Tracker-Travel-Expense-Management-System" target="_blank" class="explore-btn magnetic-btn">Read Case Study →</a>
                 </div>
             </section>
 
-            <!-- Project 4 (NEW) -->
+            <!-- Project 4 -->
             <section class="screen" id="screen-5">
                 <div class="content-block left-align">
                     <p class="tag">04 / HEALTHCARE UX</p>
                     <h2>URiki</h2>
                     <p>Retirees' Journey Towards Achieving Their Ikigai.</p>
-                    <a href="https://www.behance.net/ShwetaMandwale" target="_blank" class="explore-btn">Read Case Study →</a>
+                    <a href="https://www.behance.net/ShwetaMandwale" target="_blank" class="explore-btn magnetic-btn">Read Case Study →</a>
                 </div>
             </section>
 
-            <!-- Project 5 (NEW) -->
+            <!-- Project 5 -->
             <section class="screen" id="screen-6">
                 <div class="content-block right-align">
                     <p class="tag">05 / APP DESIGN</p>
                     <h2>Fortis Medication</h2>
                     <p>Connecting environments to vitalize medication.</p>
-                    <a href="https://www.behance.net/ShwetaMandwale" target="_blank" class="explore-btn">Read Case Study →</a>
+                    <a href="https://www.behance.net/ShwetaMandwale" target="_blank" class="explore-btn magnetic-btn">Read Case Study →</a>
                 </div>
             </section>
 
-            <!-- Project 6 (NEW) -->
+            <!-- Project 6 -->
             <section class="screen" id="screen-7">
                 <div class="content-block left-align">
                     <p class="tag">06 / IMMERSIVE EXPERIENCES</p>
                     <h2>Restaurant VR</h2>
                     <p>Enhance the restaurant experience through virtual reality.</p>
-                    <a href="https://www.behance.net/ShwetaMandwale" target="_blank" class="explore-btn">Read Case Study →</a>
+                    <a href="https://www.behance.net/ShwetaMandwale" target="_blank" class="explore-btn magnetic-btn">Read Case Study →</a>
                 </div>
             </section>
 
-            <!-- About & Resume -->
-            <section class="screen" id="screen-8">
+            <!-- NEW: PROFESSIONAL EXPERIENCE SECTION -->
+            <section class="screen" id="screen-experience">
+                <div class="content-block right-align" style="max-width: 600px;">
+                    <p class="tag">PROFESSIONAL JOURNEY</p>
+                    <h2 style="margin-bottom: 2rem;">Experience</h2>
+                    
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <h3>Senior Consultant</h3>
+                            <p class="company">Neudesic, an IBM Company | 2022 - 2024</p>
+                            <p class="details">Led product strategy and end-to-end design of enterprise SaaS products achieving company-wide adoption. Led design strategy for clients including Caption Health, AMN Healthcare, and Woodside Energy.</p>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <h3>Solution Designer</h3>
+                            <p class="company">LearningMate Solutions | 2021 - 2022</p>
+                            <p class="details">Directed intranet portal redesign strategy, improving task completion by 40%. Designed AR-based training and educational content for Philips Healthcare.</p>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <h3>Student Researcher</h3>
+                            <p class="company">Harvard T.H. Chan School of Public Health | 2020 - 2021</p>
+                            <p class="details">Led qualitative research on COVID-19 behavioral adaptation in religious communities, informing community intervention strategy.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Footer / Resume -->
+            <section class="screen" id="screen-9">
                 <div class="content-block center-align">
                     <h2 style="font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 2rem;">The Human Behind the Work</h2>
-                    <p style="margin-bottom: 2rem; font-size: 1.2rem;">
+                    <p style="margin-bottom: 2rem; font-size: 1.2rem; font-style: italic;">
                         "I craft solutions by deeply understanding the people, systems, and contexts involved."
                     </p>
                     <p><strong>M.Des Strategic Design</strong> | NID</p>

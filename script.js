@@ -6,7 +6,7 @@ gsap.registerPlugin(ScrollTrigger);
 const isMobile = window.innerWidth < 768;
 const canvas = document.querySelector('#webgl-canvas');
 const scene = new THREE.Scene();
-scene.fog = new THREE.FogExp2(0xFBFBF9, 0.035);
+scene.fog = new THREE.FogExp2(0xFBFBF9, 0.12);
 
 const sizes = { width: window.innerWidth, height: window.innerHeight };
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100);
@@ -295,16 +295,129 @@ createExplodedProject('assets/fortis.png', p1_X, 1, -50, isMobile ? 0 : 0.2, 'ap
 createExplodedProject('assets/vr-restaurant.png', p2_X, 1, -60, isMobile ? 0 : -0.2, 'vr'); 
 
 // ==========================================
-// 4. GSAP CAMERA FLIGHT
+// 3.5 THE SKILL NETWORK (Spider Web Mind Map)
 // ==========================================
+const skillGroup = new THREE.Group();
+// Position on the left side (X: -3.5), exactly at the Experience depth (Z: -70)
+skillGroup.position.set(isMobile ? 0 : -3.5, 1, -70);
+scene.add(skillGroup);
+
+const skills = [
+    { text: "STRATEGY", pos: [0, 1.5, 0] },
+    { text: "UX RESEARCH", pos: [-2, 0.5, 1] },
+    { text: "SYSTEMS THINKING", pos: [2, 0.5, -1] },
+    { text: "BEHAVIORAL DESIGN", pos: [-1.5, -1.5, 0] },
+    { text: "SERVICE DESIGN", pos: [1.5, -1.5, 1] }
+];
+
+const nodeElements = [];
+const linePositions = [];
+
+// Helper to create Crisp, Modern Sans-Serif Text
+function createDataLabel(message) {
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+    canvas.width = 512;
+    canvas.height = 128;
+    
+    context.fillStyle = 'rgba(251, 251, 249, 0)'; 
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // Modern, technical tracking (uppercase sans-serif)
+    context.font = '600 36px Inter, sans-serif';
+    context.textAlign = 'center';
+    context.textBaseline = 'middle';
+    context.letterSpacing = "2px";
+    
+    context.fillStyle = '#1C1C1E'; // Charcoal text for better readability
+    context.fillText(message, canvas.width / 2, canvas.height / 2);
+    
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.minFilter = THREE.LinearFilter;
+    
+    const spriteMat = new THREE.SpriteMaterial({ map: texture, transparent: true, opacity: 0.9 });
+    const sprite = new THREE.Sprite(spriteMat);
+    sprite.scale.set(4, 1, 1); 
+    return sprite;
+}
+
+// 1. Create the Nodes (Glowing Dots) and the Text Labels
+const nodeGeo = new THREE.SphereGeometry(0.1, 16, 16);
+const nodeMat = new THREE.MeshBasicMaterial({ color: 0xD85A42 }); // Terracotta dots
+
+skills.forEach((skill, index) => {
+    // The glowing dot
+    const dot = new THREE.Mesh(nodeGeo, nodeMat);
+    dot.position.set(skill.pos[0], skill.pos[1], skill.pos[2]);
+    skillGroup.add(dot);
+
+    // The text label floating just above/below the dot
+    const label = createDataLabel(skill.text);
+    label.position.set(skill.pos[0], skill.pos[1] + 0.3, skill.pos[2]);
+    skillGroup.add(label);
+
+    // Store for animation
+    nodeElements.push({
+        dot: dot,
+        label: label,
+        ox: skill.pos[0],
+        oy: skill.pos[1],
+        oz: skill.pos[2],
+        speed: 0.5 + Math.random() * 0.5,
+        offset: Math.random() * Math.PI * 2
+    });
+
+    // Store coordinates for the spider web lines
+    linePositions.push(skill.pos[0], skill.pos[1], skill.pos[2]);
+});
+
+// 2. Create the Spider Web Connections (Lines)
+const lineGeo = new THREE.BufferGeometry();
+lineGeo.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
+// Connect all nodes in a loop to form the web
+const lineIndex = [
+    0,1,  1,3,  3,4,  4,2,  2,0,  // Outer ring
+    0,3,  1,4,  1,2             // Inner cross connections
+];
+lineGeo.setIndex(lineIndex);
+
+const webMat = new THREE.LineBasicMaterial({ color: 0xD85A42, transparent: true, opacity: 0.3 });
+const webLines = new THREE.LineSegments(lineGeo, webMat);
+skillGroup.add(webLines);
+
+// 3. Add a Title Label above the whole web so we know what this is
+const titleLabel = createDataLabel("CORE COMPETENCIES");
+titleLabel.material.color.setHex(0xD85A42); // Make the title terracotta
+titleLabel.scale.set(3, 0.75, 1);
+titleLabel.position.set(0, 3, 0);
+skillGroup.add(titleLabel);
+
+// ==========================================
+// 4. GSAP CAMERA FLIGHT & CINEMATIC FOG
+// ==========================================
+// 1. The Camera Movement
 gsap.to(camera.position, {
-    z: -65, 
+    z: -75, 
     ease: "none",
     scrollTrigger: {
         trigger: ".scroll-container",
         start: "top top",
         end: "bottom bottom",
-        scrub: 1.0 // This must remain 1.0 to prevent "lag" behind the text
+        scrub: 1.0 
+    }
+});
+
+// 2. NEW: The Cinematic Fog Clearing
+// Starts completely fogged out to hide the background cards on Screen 1.
+// Clears beautifully as soon as the user scrolls down.
+gsap.to(scene.fog, {
+    density: 0.035, // Drops to normal visibility
+    ease: "none",
+    scrollTrigger: {
+        trigger: ".scroll-container",
+        start: "top top",
+        end: "10% top", // Clears during the first 10% of the scroll
+        scrub: true
     }
 });
 
@@ -382,10 +495,39 @@ const tick = () => {
         });
     }
 
-    // Idle floating for all projects (only applied on Y axis to not break hover tilt)
+    // Idle floating for all projects
     projectGroups.forEach((group, index) => {
         group.position.y = Math.sin(elapsedTime * 0.5 + index) * 0.2 + 1;
     });
+
+    // --- ANIMATE THE SKILL NETWORK (Spider Web) ---
+    // The whole web floats slightly
+    skillGroup.position.y = Math.sin(elapsedTime * 0.5) * 0.2 + 1;
+    
+    // Smooth 3D parallax based on mouse position
+    skillGroup.rotation.y = targetX * 0.2;
+    skillGroup.rotation.x = -targetY * 0.2;
+    
+    // Animate the nodes breathing
+    const currentLinePositions = webLines.geometry.attributes.position.array;
+    
+    nodeElements.forEach((el, i) => {
+        // Subtle drift
+        const dx = Math.sin(elapsedTime * el.speed + el.offset) * 0.2;
+        const dy = Math.cos(elapsedTime * el.speed * 0.8 + el.offset) * 0.2;
+        const dz = Math.sin(elapsedTime * el.speed * 1.2) * 0.2;
+
+        el.dot.position.set(el.ox + dx, el.oy + dy, el.oz + dz);
+        el.label.position.set(el.ox + dx, el.oy + dy + 0.3, el.oz + dz);
+
+        // Update the line geometry so the web stretches with the nodes
+        const i3 = i * 3;
+        currentLinePositions[i3] = el.dot.position.x;
+        currentLinePositions[i3+1] = el.dot.position.y;
+        currentLinePositions[i3+2] = el.dot.position.z;
+    });
+    
+    webLines.geometry.attributes.position.needsUpdate = true;
 
     renderer.render(scene, camera);
     window.requestAnimationFrame(tick);
