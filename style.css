@@ -6,6 +6,12 @@
     --font-serif: 'Newsreader', serif;
 }
 
+/* Add Scroll Snapping to force the browser to align perfectly with each card */
+html {
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+}
+
 body, html {
     margin: 0;
     padding: 0;
@@ -41,10 +47,10 @@ body, html {
 }
 
 .loader-line {
-    width: 0%; /* Starts at 0, updated by JavaScript */
+    width: 0%; 
     height: 2px;
     background: var(--accent);
-    transition: width 0.2s ease-out; /* Smooth transition as files load */
+    transition: width 0.2s ease-out; 
 }
 
 /* =========================================
@@ -125,15 +131,14 @@ body, html {
     box-sizing: border-box;
 }
 
-.scroll-container {
-    height: 500vh;
-}
-
 .screen {
     height: 100vh;
+    height: 100dvh; /* Dynamic viewport height ensures it fits perfectly on mobile */
     display: flex;
     align-items: center;
     padding: 0 10%;
+    scroll-snap-align: start; /* This forces the screen to snap perfectly into view */
+    scroll-snap-stop: always;
 }
 
 .content-block {
@@ -168,14 +173,6 @@ h2 {
     font-size: clamp(2rem, 3vw, 2.5rem);
     font-weight: 400;
     margin: 1rem 0;
-}
-
-@media (max-width: 768px) {
-    .content-block {
-        margin: 0 auto !important;
-        text-align: center;
-        padding: 2rem;
-    }
 }
 
 /* =========================================
@@ -216,16 +213,6 @@ h2 {
     box-shadow: 0 6px 20px rgba(216, 90, 66, 0.2);
 }
 
-@media (max-width: 768px) {
-    .social-orbs {
-        flex-direction: row;
-        bottom: 1.5rem;
-        right: auto;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-}
-
 /* =========================================
    HERO PROFILE PICTURE & LAYOUT
    ========================================= */
@@ -234,7 +221,6 @@ h2 {
     justify-content: center; 
     align-items: center;
     width: 100vw; 
-    height: 100vh;
     padding: 0 !important; 
     margin: 0;
 }
@@ -243,14 +229,14 @@ h2 {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 6rem; /* Slightly larger gap to balance the wider text */
+    gap: 6rem; 
     width: 100%;
-    max-width: 1200px; /* INCREASED from 1000px so it has room to breathe */
+    max-width: 1200px; 
     margin: 0 auto;
 }
 
 #screen-1 .content-block {
-    max-width: 600px; /* INCREASED from 450px to stop awkward text wrapping */
+    max-width: 600px; 
     width: 100%;
     margin: 0; 
     text-align: left; 
@@ -268,6 +254,7 @@ h2 {
     position: relative;
     width: 380px;  
     height: 380px; 
+    margin: 0 auto; /* Forces absolute center */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -279,15 +266,17 @@ h2 {
     border-radius: 50%;
     object-fit: cover;
     z-index: 2;
+    position: relative;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15); 
 }
 
 .profile-ring {
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 50%;
+    left: 50%;
     width: 100%;
     height: 100%;
+    transform: translate(-50%, -50%); /* Locks the ring flawlessly to the center */
     border-radius: 50%;
     background: rgba(251, 251, 249, 0.4);
     backdrop-filter: blur(10px);
@@ -299,20 +288,8 @@ h2 {
 }
 
 @keyframes spinRing {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-/* Mobile Adjustments */
-@media (max-width: 768px) {
-    .hero-wrapper {
-        flex-direction: column;
-        gap: 2rem;
-    }
-    #screen-1 .content-block { text-align: center; max-width: 500px; }
-    .hero-profile { order: -1; }
-    .profile-image-container { width: 260px; height: 260px; }
-    .profile-img { width: 200px; height: 200px; }
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
 /* =========================================
@@ -325,7 +302,6 @@ h2 {
     position: relative;
 }
 
-/* The vertical line connecting the jobs */
 .timeline::before {
     content: '';
     position: absolute;
@@ -341,7 +317,6 @@ h2 {
     padding-left: 2rem;
 }
 
-/* The dot on the timeline */
 .timeline-item::before {
     content: '';
     position: absolute;
@@ -350,7 +325,7 @@ h2 {
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background: var(--accent); /* Terracotta dot */
+    background: var(--accent); 
 }
 
 .timeline-item h3 {
@@ -375,26 +350,99 @@ h2 {
     margin: 0;
 }
 
-/* Mobile Adjustments for the new elements */
+/* =========================================
+   RESPONSIVE DESIGN (LAPTOP & TABLET)
+   ========================================= */
+@media (max-width: 1200px) {
+    .content-block {
+        max-width: 400px;
+        padding: 2rem;
+    }
+    .hero-wrapper {
+        gap: 3rem; 
+        padding: 0 5%;
+    }
+    .profile-image-container { width: 300px; height: 300px; }
+    .profile-img { width: 240px; height: 240px; }
+}
+
+/* =========================================
+   RESPONSIVE DESIGN (MOBILE)
+   ========================================= */
 @media (max-width: 768px) {
-    #screen-1 {
+    
+    /* Disables desktop alignment so everything perfectly stacks in center */
+    .right-align, .left-align {
+        margin: 0 auto !important;
+    }
+
+    /* Pushes the text safely to the bottom without clipping the social buttons */
+    .screen {
         flex-direction: column;
-        justify-content: center;
+        justify-content: flex-end; 
+        padding: 0 5% 15vh 5%; 
+        box-sizing: border-box;
+    }
+
+    .content-block {
+        width: 100%;
+        max-width: 100%;
+        margin: 0 auto !important;
+        padding: 1.5rem;
+        background: rgba(251, 251, 249, 0.95); 
         text-align: center;
+        border-radius: 16px;
+    }
+
+    /* The Hero Section (Screen 1): Ensure perfect stacking */
+    #screen-1 {
+        justify-content: center;
+        padding: 0 5% !important;
     }
     
-    .hero-profile {
-        margin: 2rem auto 0 auto;
-        order: -1; /* Puts the profile pic ABOVE the text on mobile */
+    .hero-wrapper {
+        flex-direction: column;
+        gap: 2rem;
+        width: 100%;
     }
     
-    .profile-image-container {
-        width: 200px;
-        height: 200px;
+    .hero-profile { 
+        order: -1; 
+        margin: 0 auto; 
     }
     
-    .profile-img {
-        width: 160px;
-        height: 160px;
+    /* Perfect profile ring centering */
+    .profile-image-container { width: 220px; height: 220px; }
+    .profile-img { width: 170px; height: 170px; }
+
+    .contact-pills {
+        justify-content: center;
+    }
+
+    /* Experience Timeline */
+    #screen-experience {
+        justify-content: flex-end;
+    }
+    
+    .timeline-item {
+        text-align: left; 
+        padding-left: 1.5rem;
+    }
+    
+    .timeline-item h3 {
+        font-size: 1.3rem;
+    }
+    
+    .hero-title {
+        font-size: clamp(2.5rem, 8vw, 3rem);
+    }
+    
+    /* Fix floating orbs on mobile */
+    .social-orbs {
+        flex-direction: row;
+        bottom: 1.5rem;
+        right: auto;
+        left: 50%;
+        transform: translateX(-50%);
     }
 }
