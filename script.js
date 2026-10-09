@@ -6,7 +6,7 @@ gsap.registerPlugin(ScrollTrigger);
 const isMobile = window.innerWidth < 768;
 const canvas = document.querySelector('#webgl-canvas');
 const scene = new THREE.Scene();
-scene.fog = new THREE.FogExp2(0xFBFBF9, 0.12);
+scene.fog = new THREE.Fog(0xFBFBF9, 6, 15);
 
 const sizes = { width: window.innerWidth, height: window.innerHeight };
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100);
@@ -393,9 +393,8 @@ titleLabel.position.set(0, 3, 0);
 skillGroup.add(titleLabel);
 
 // ==========================================
-// 4. GSAP CAMERA FLIGHT & CINEMATIC FOG
+// 4. GSAP CAMERA FLIGHT
 // ==========================================
-// 1. The Camera Movement
 gsap.to(camera.position, {
     z: -75, 
     ease: "none",
@@ -404,20 +403,6 @@ gsap.to(camera.position, {
         start: "top top",
         end: "bottom bottom",
         scrub: 1.0 
-    }
-});
-
-// 2. NEW: The Cinematic Fog Clearing
-// Starts completely fogged out to hide the background cards on Screen 1.
-// Clears beautifully as soon as the user scrolls down.
-gsap.to(scene.fog, {
-    density: 0.035, // Drops to normal visibility
-    ease: "none",
-    scrollTrigger: {
-        trigger: ".scroll-container",
-        start: "top top",
-        end: "10% top", // Clears during the first 10% of the scroll
-        scrub: true
     }
 });
 
