@@ -41,15 +41,10 @@ body, html {
 }
 
 .loader-line {
-    width: 0;
+    width: 0%; /* Starts at 0, updated by JavaScript */
     height: 2px;
     background: var(--accent);
-    animation: loadLine 1.5s cubic-bezier(0.7, 0, 0.2, 1) forwards;
-}
-
-@keyframes loadLine {
-    0% { width: 0; }
-    100% { width: 100%; }
+    transition: width 0.2s ease-out; /* Smooth transition as files load */
 }
 
 /* =========================================

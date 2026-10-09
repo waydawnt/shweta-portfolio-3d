@@ -36,10 +36,36 @@ waveMesh.rotation.x = -Math.PI / 2;
 waveMesh.position.y = -4; 
 scene.add(waveMesh);
 
+
 // ==========================================
 // 3. EXPLODED VIEW & UNIFIED HOVER PHYSICS
 // ==========================================
-const textureLoader = new THREE.TextureLoader();
+
+// --- THE REAL-TIME LOADING MANAGER ---
+const loadingManager = new THREE.LoadingManager();
+const loaderBar = document.getElementById('loader-bar');
+const loaderText = document.getElementById('loader-text');
+
+loadingManager.onProgress = (url, itemsLoaded, itemsTotal) => {
+    // Calculate actual percentage of assets downloaded
+    const progress = (itemsLoaded / itemsTotal) * 100;
+    loaderBar.style.width = `${progress}%`;
+    loaderText.innerText = `${Math.floor(progress)}%`;
+};
+
+// When everything is 100% loaded
+loadingManager.onLoad = () => {
+    // Add a tiny 500ms delay so the user actually sees it hit 100%
+    setTimeout(() => {
+        const preloader = document.getElementById('preloader');
+        preloader.style.opacity = '0';
+        preloader.style.visibility = 'hidden';
+        tick(); // Start the 3D physics engine ONLY when fully loaded
+    }, 500);
+};
+
+// Pass the manager into our texture loader
+const textureLoader = new THREE.TextureLoader(loadingManager);
 const projectGroups = [];
 
 // Shared Ultra-Premium Glass Material
@@ -524,15 +550,6 @@ window.addEventListener('resize', () => {
     camera.aspect = sizes.width / sizes.height;
     camera.updateProjectionMatrix();
     renderer.setSize(sizes.width, sizes.height);
-});
-
-window.addEventListener('load', () => {
-    setTimeout(() => {
-        const preloader = document.getElementById('preloader');
-        preloader.style.opacity = '0';
-        preloader.style.visibility = 'hidden';
-        tick(); 
-    }, 1500); 
 });
 
 if (!isMobile) {
