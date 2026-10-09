@@ -1,0 +1,232 @@
+:root {
+    --bg-canvas: #FBFBF9;
+    --text-primary: #1C1C1E;
+    --accent: #D85A42;
+    --font-sans: 'Inter', sans-serif;
+    --font-serif: 'Newsreader', serif;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-sans);
+    color: var(--text-primary);
+    background-color: var(--bg-canvas);
+    overflow-x: hidden;
+}
+
+/* =========================================
+   PRELOADER
+   ========================================= */
+#preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: var(--bg-canvas);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 1s ease-out, visibility 1s ease-out;
+}
+
+.loader-content p {
+    font-family: var(--font-serif);
+    letter-spacing: 0.05em;
+    font-size: 1.2rem;
+    margin-top: 1rem;
+    color: var(--text-secondary);
+}
+
+.loader-line {
+    width: 0;
+    height: 2px;
+    background: var(--accent);
+    animation: loadLine 1.5s cubic-bezier(0.7, 0, 0.2, 1) forwards;
+}
+
+@keyframes loadLine {
+    0% { width: 0; }
+    100% { width: 100%; }
+}
+
+/* =========================================
+   3D CANVAS & LAYERS
+   ========================================= */
+#webgl-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+}
+
+#ui-layer {
+    position: relative;
+    z-index: 10;
+    pointer-events: none; 
+}
+
+.navbar, .explore-btn, .btn-primary {
+    pointer-events: auto;
+}
+
+/* =========================================
+   FROSTED GLASS BUTTONS
+   ========================================= */
+.btn-primary, .explore-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 2.5rem;
+    color: var(--text-primary);
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 50px;
+    border: 1px solid rgba(28, 28, 30, 0.1);
+    
+    background: rgba(251, 251, 249, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    
+    transition: box-shadow 0.4s ease, border-color 0.4s ease, background 0.4s ease;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.btn-primary:hover, .explore-btn:hover {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: var(--accent);
+    box-shadow: 0 8px 25px rgba(216, 90, 66, 0.15);
+}
+
+.download-btn {
+    padding: 1.5rem 4rem;
+    font-size: 1.2rem;
+    background: var(--text-primary);
+    color: var(--bg-canvas);
+}
+.download-btn:hover {
+    background: #000;
+    color: #fff;
+}
+
+/* =========================================
+   LAYOUT & TYPOGRAPHY
+   ========================================= */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 2rem 5%;
+    box-sizing: border-box;
+}
+
+.scroll-container {
+    height: 500vh;
+}
+
+.screen {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 0 10%;
+}
+
+.content-block {
+    max-width: 500px;
+    background: rgba(251, 251, 249, 0.85);
+    backdrop-filter: blur(10px);
+    padding: 3rem;
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.center-align { text-align: center; margin: 0 auto; display: flex; flex-direction: column; align-items: center;}
+.right-align { margin-left: auto; }
+.left-align { margin-right: auto; }
+
+.hero-title {
+    font-family: var(--font-serif);
+    font-size: clamp(3rem, 5vw, 4.5rem);
+    line-height: 1.1;
+    margin-bottom: 1rem;
+}
+
+.tag {
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    text-transform: uppercase;
+}
+
+h2 {
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 3vw, 2.5rem);
+    font-weight: 400;
+    margin: 1rem 0;
+}
+
+@media (max-width: 768px) {
+    .content-block {
+        margin: 0 auto !important;
+        text-align: center;
+        padding: 2rem;
+    }
+}
+
+/* =========================================
+   SOCIAL ORBS (Floating Links)
+   ========================================= */
+.social-orbs {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    z-index: 100;
+}
+
+.orb {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    color: var(--text-primary);
+    background: rgba(251, 251, 249, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(28, 28, 30, 0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.3s ease, color 0.3s ease, background 0.3s ease;
+    cursor: pointer;
+    text-decoration: none;
+    pointer-events: auto;
+}
+
+.orb:hover {
+    color: var(--accent);
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 6px 20px rgba(216, 90, 66, 0.2);
+}
+
+@media (max-width: 768px) {
+    .social-orbs {
+        flex-direction: row;
+        bottom: 1.5rem;
+        right: auto;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
