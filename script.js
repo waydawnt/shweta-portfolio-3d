@@ -245,12 +245,12 @@ function createExplodedProject(imagePath, align, baseZ, effectType) {
 }
 
 // Create projects with abstract alignment ('left' or 'right')
-createExplodedProject('assets/go-kart.png', 'left', -10, 'kart'); 
-createExplodedProject('assets/proximate.png', 'right', -20, 'civic'); 
-createExplodedProject('assets/finance.png', 'left', -30, 'finance'); 
-createExplodedProject('assets/uriki.png', 'right', -40, 'health'); 
-createExplodedProject('assets/fortis.png', 'left', -50, 'app'); 
-createExplodedProject('assets/vr-restaurant.png', 'right', -60, 'vr'); 
+createExplodedProject('assets/go-kart.webp', 'left', -10, 'kart'); 
+createExplodedProject('assets/proximate.webp', 'right', -20, 'civic'); 
+createExplodedProject('assets/finance.webp', 'left', -30, 'finance'); 
+createExplodedProject('assets/uriki.webp', 'right', -40, 'health'); 
+createExplodedProject('assets/fortis.webp', 'left', -50, 'app'); 
+createExplodedProject('assets/vr-restaurant.webp', 'right', -60, 'vr'); 
 
 // ==========================================
 // 3.5 THE SKILL NETWORK (Spider Web Mind Map)
