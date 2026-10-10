@@ -6,7 +6,14 @@
     --font-serif: 'Newsreader', serif;
 }
 
-/* Add Scroll Snapping to force the browser to align perfectly with each card */
+/* Global box-sizing – prevents padding from causing overflow */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* Scroll snapping – gentler on mobile */
 html {
     scroll-snap-type: y mandatory;
     scroll-behavior: smooth;
@@ -19,6 +26,7 @@ body, html {
     color: var(--text-primary);
     background-color: var(--bg-canvas);
     overflow-x: hidden;
+    max-width: 100%;
 }
 
 /* =========================================
@@ -47,10 +55,10 @@ body, html {
 }
 
 .loader-line {
-    width: 0%; 
+    width: 0%;
     height: 2px;
     background: var(--accent);
-    transition: width 0.2s ease-out; 
+    transition: width 0.2s ease-out;
 }
 
 /* =========================================
@@ -68,7 +76,7 @@ body, html {
 #ui-layer {
     position: relative;
     z-index: 10;
-    pointer-events: none; 
+    pointer-events: none;
 }
 
 .navbar, .explore-btn, .btn-primary {
@@ -90,12 +98,10 @@ body, html {
     font-weight: 500;
     border-radius: 50px;
     border: 1px solid rgba(28, 28, 30, 0.1);
-    
     background: rgba(251, 251, 249, 0.6);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
-    
     transition: box-shadow 0.4s ease, border-color 0.4s ease, background 0.4s ease;
     cursor: pointer;
     z-index: 10;
@@ -129,16 +135,18 @@ body, html {
     justify-content: space-between;
     padding: 2rem 5%;
     box-sizing: border-box;
+    z-index: 500;
 }
 
 .screen {
-    height: 100vh;
-    height: 100dvh; /* Dynamic viewport height ensures it fits perfectly on mobile */
+    min-height: 100vh;
+    min-height: 100svh; /* better mobile support */
     display: flex;
     align-items: center;
     padding: 0 10%;
-    scroll-snap-align: start; /* This forces the screen to snap perfectly into view */
+    scroll-snap-align: start;
     scroll-snap-stop: always;
+    box-sizing: border-box;
 }
 
 .content-block {
@@ -147,10 +155,11 @@ body, html {
     backdrop-filter: blur(10px);
     padding: 3rem;
     border-radius: 12px;
-    border: 1px solid rgba(0,0,0,0.05);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-sizing: border-box;
 }
 
-.center-align { text-align: center; margin: 0 auto; display: flex; flex-direction: column; align-items: center;}
+.center-align { text-align: center; margin: 0 auto; display: flex; flex-direction: column; align-items: center; }
 .right-align { margin-left: auto; }
 .left-align { margin-right: auto; }
 
@@ -176,7 +185,7 @@ h2 {
 }
 
 /* =========================================
-   SOCIAL ORBS (Floating Links)
+   SOCIAL ORBS
    ========================================= */
 .social-orbs {
     position: fixed;
@@ -214,14 +223,14 @@ h2 {
 }
 
 /* =========================================
-   HERO PROFILE PICTURE & LAYOUT
+   HERO PROFILE
    ========================================= */
 #screen-1 {
     display: flex;
-    justify-content: center; 
+    justify-content: center;
     align-items: center;
-    width: 100vw; 
-    padding: 0 !important; 
+    width: 100%; /* was 100vw – causes scrollbar width overflow */
+    padding: 0 !important;
     margin: 0;
 }
 
@@ -229,45 +238,46 @@ h2 {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 6rem; 
+    gap: 6rem;
     width: 100%;
-    max-width: 1200px; 
+    max-width: 1200px;
     margin: 0 auto;
+    box-sizing: border-box;
 }
 
 #screen-1 .content-block {
-    max-width: 600px; 
+    max-width: 600px;
     width: 100%;
-    margin: 0; 
-    text-align: left; 
+    margin: 0;
+    text-align: left;
 }
 
 .hero-profile {
     position: relative;
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
 .profile-image-container {
     position: relative;
-    width: 380px;  
-    height: 380px; 
-    margin: 0 auto; /* Forces absolute center */
+    width: 380px;
+    height: 380px;
+    margin: 0 auto;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .profile-img {
-    width: 300px;  
-    height: 300px; 
+    width: 300px;
+    height: 300px;
     border-radius: 50%;
     object-fit: cover;
     z-index: 2;
     position: relative;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15); 
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
 }
 
 .profile-ring {
@@ -276,13 +286,13 @@ h2 {
     left: 50%;
     width: 100%;
     height: 100%;
-    transform: translate(-50%, -50%); /* Locks the ring flawlessly to the center */
+    transform: translate(-50%, -50%);
     border-radius: 50%;
     background: rgba(251, 251, 249, 0.4);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(216, 90, 66, 0.4); 
-    border-top: 2px solid transparent; 
+    border: 1px solid rgba(216, 90, 66, 0.4);
+    border-top: 2px solid transparent;
     z-index: 1;
     animation: spinRing 25s linear infinite;
 }
@@ -290,6 +300,15 @@ h2 {
 @keyframes spinRing {
     0% { transform: translate(-50%, -50%) rotate(0deg); }
     100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.contact-pills {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+    z-index: 10;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 /* =========================================
@@ -325,7 +344,7 @@ h2 {
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background: var(--accent); 
+    background: var(--accent);
 }
 
 .timeline-item h3 {
@@ -351,7 +370,7 @@ h2 {
 }
 
 /* =========================================
-   RESPONSIVE DESIGN (LAPTOP & TABLET)
+   RESPONSIVE – LAPTOP & TABLET
    ========================================= */
 @media (max-width: 1200px) {
     .content-block {
@@ -359,7 +378,7 @@ h2 {
         padding: 2rem;
     }
     .hero-wrapper {
-        gap: 3rem; 
+        gap: 3rem;
         padding: 0 5%;
     }
     .profile-image-container { width: 300px; height: 300px; }
@@ -367,77 +386,86 @@ h2 {
 }
 
 /* =========================================
-   RESPONSIVE DESIGN (MOBILE)
+   RESPONSIVE – MOBILE
    ========================================= */
 @media (max-width: 768px) {
-    
-    /* Disables desktop alignment so everything perfectly stacks in center */
-    .right-align, .left-align {
-        margin: 0 auto !important;
+    /* Gentler snapping on mobile */
+    html {
+        scroll-snap-type: y proximity;
     }
 
-    /* Pushes the text safely to the bottom without clipping the social buttons */
+    /* Centre everything vertically, add safe padding */
     .screen {
         flex-direction: column;
-        justify-content: flex-end; 
-        padding: 0 5% 15vh 5%; 
-        box-sizing: border-box;
-    }
-
-    .content-block {
-        width: 100%;
-        max-width: 100%;
-        margin: 0 auto !important;
-        padding: 1.5rem;
-        background: rgba(251, 251, 249, 0.95); 
-        text-align: center;
-        border-radius: 16px;
-    }
-
-    /* The Hero Section (Screen 1): Ensure perfect stacking */
-    #screen-1 {
         justify-content: center;
-        padding: 0 5% !important;
+        align-items: center;
+        padding: 8rem 5% 6rem 5%;
+        min-height: 100svh;
+        height: auto;
     }
-    
+
+    /* Hero screen – keep centred with breathing room */
+    #screen-1 {
+        padding: 8rem 5% 6rem 5% !important;
+        min-height: 100svh;
+        height: auto;
+    }
+
     .hero-wrapper {
         flex-direction: column;
         gap: 2rem;
         width: 100%;
+        padding: 0 5%;
     }
-    
-    .hero-profile { 
-        order: -1; 
-        margin: 0 auto; 
+
+    .hero-profile {
+        order: -1;
+        margin: 0 auto;
     }
-    
-    /* Perfect profile ring centering */
+
     .profile-image-container { width: 220px; height: 220px; }
     .profile-img { width: 170px; height: 170px; }
 
     .contact-pills {
         justify-content: center;
+        margin-top: 1.5rem;
     }
 
-    /* Experience Timeline */
-    #screen-experience {
-        justify-content: flex-end;
+    /* Content blocks full width, centred */
+    .content-block {
+        width: 100%;
+        max-width: 100%;
+        margin: 0 auto !important;
+        padding: 1.5rem;
+        background: rgba(251, 251, 249, 0.95);
+        text-align: center;
+        border-radius: 16px;
     }
-    
+
+    .right-align, .left-align {
+        margin: 0 auto !important;
+    }
+
+    /* Experience – start from top so long timeline can scroll */
+    #screen-experience {
+        justify-content: flex-start;
+        padding-top: 8rem;
+    }
+
     .timeline-item {
-        text-align: left; 
+        text-align: left;
         padding-left: 1.5rem;
     }
-    
+
     .timeline-item h3 {
         font-size: 1.3rem;
     }
-    
+
     .hero-title {
         font-size: clamp(2.5rem, 8vw, 3rem);
     }
-    
-    /* Fix floating orbs on mobile */
+
+    /* Social orbs – centered at bottom */
     .social-orbs {
         flex-direction: row;
         bottom: 1.5rem;
